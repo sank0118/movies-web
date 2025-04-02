@@ -11,45 +11,32 @@ import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 const MovieSlide = ({ results }: TMDBResponse) => {
   const options: Settings = {
     slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToScroll: 1,
     speed: 500,
     infinite: true,
     autoplay: true,
     autoplaySpeed: 2000,
   };
-
   const slideRef = useRef<Slider>(null);
-
   return (
     <div>
       <h2>{results.length}개의 영화</h2>
-      <div className="relative ">
+      <div className="relative">
         <button
           onClick={() => slideRef.current?.slickPrev()}
-          className="absolute top-[50%] left-0 bg-white  z-10 translate-y-[-50%] cursor-pointer p-1.5 rounded border-gray-200"
+          className="absolute top-[50%] left-0 bg-white border z-10 translate-y-[-50%] cursor-pointer p-1.5 rounded border-gray-200"
         >
           <IoChevronBack />
         </button>
         <button
           onClick={() => slideRef.current?.slickNext()}
-          className="absolute top-[50%] right-0 bg-white  z-10 translate-y-[-50%] cursor-pointer p-1.5 rounded border-gray-200"
+          className="absolute top-[50%] right-0 bg-white border z-10 translate-y-[-50%] cursor-pointer p-1.5 rounded border-gray-200"
         >
           <IoChevronForward />
         </button>
-        <Slider
-          {...options}
-          className="overflow-hidden  m-2.5"
-          nextArrow={
-            <button className="absolute top-[50%] right-0 border h-20border-red-500">
-              다음
-            </button>
-          }
-          prevArrow={
-            <button className="absolute top-[50%] left-0">이전</button>
-          }
-        >
+        <Slider {...options} className="overflow-hidden m-2.5" ref={slideRef}>
           {results.map((movie) => (
-            <MovieSlideItem {...movie} key={movie.id} />
+            <MovieSlideItem key={movie.id} {...movie} />
           ))}
         </Slider>
       </div>

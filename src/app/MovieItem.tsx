@@ -2,15 +2,15 @@ import { TMDBMovie } from "@/types/tmdb";
 import Image from "next/image";
 import Link from "next/link";
 
-const MoviItem = (movie: TMDBMovie) => {
+const MovieItem = (movie: TMDBMovie) => {
   return (
     <Link href={movie.id.toString()}>
       <div className="rounded-2xl p-2.5 border-gray-200 hover:shadow-md">
         <div className="overflow-hidden rounded-2xl hover:shadow-md hover:opacity-90">
           <Image
             alt={movie.title}
-            src={`${process.env.TMDB_IMG_URL}/w500${movie.poster_path}`}
-            width={100}
+            src={`${process.env.NEXT_PUBLIC_TMDB_IMG_URL}/w500${movie.poster_path}`}
+            width={180}
             height={320}
             className="w-full"
           />
@@ -23,9 +23,8 @@ const MoviItem = (movie: TMDBMovie) => {
             )}
             <p className="line-clamp-3">{movie.overview}</p>
           </div>
-
           <div className="flex gap-x-2.5 items-center">
-            <div className="flex h-4 rounded-full bg-yellow-50 flex-1 flex-col justify-center px-1">
+            <div className="flex-1 h-4 rounded-full bg-yellow-50 flex flex-col justify-center px-1">
               <span
                 className="block h-2 rounded-full bg-yellow-200"
                 style={{
@@ -41,4 +40,4 @@ const MoviItem = (movie: TMDBMovie) => {
   );
 };
 
-export default MoviItem;
+export default MovieItem;

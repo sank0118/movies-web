@@ -10,7 +10,6 @@ import {
 
 const useObserver = () => {
   const [isInView, setIsInView] = useState(false);
-
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const useObserver = () => {
     });
 
     if (ref.current) {
-      observer.unobserve(ref.current);
+      observer.observe(ref.current);
     }
 
     return () => {
@@ -33,12 +32,15 @@ const useObserver = () => {
       }
     };
   }, []);
-
   const Wrapper = useCallback((props: ComponentProps<"div">) => {
-    return <div ref={ref} {...props} />;
+    return <div {...props} ref={ref} />;
   }, []);
 
-  return { isInView, Wrapper, ref };
+  return {
+    isInView,
+    Wrapper,
+    ref,
+  };
 };
 
 export default useObserver;

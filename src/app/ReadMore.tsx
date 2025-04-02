@@ -2,8 +2,8 @@
 
 import useObserver from "@/hooks/useObserver";
 import { TMDBMovie, tmdbOptions, TMDBResponse } from "@/types/tmdb";
-import MovieItem from "./MovieItem";
 import { useCallback, useEffect, useState } from "react";
+import MovieItem from "./MovieItem";
 
 const ReadMore = (movies: TMDBResponse) => {
   const { Wrapper, isInView } = useObserver();
@@ -11,7 +11,7 @@ const ReadMore = (movies: TMDBResponse) => {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
 
-  const [totoalMovies, setTotoalMovies] = useState<TMDBMovie[]>(movies.results);
+  const [totalMovies, setTotalMovies] = useState<TMDBMovie[]>(movies.results);
   const [fetchedMovies, setFetchedMovies] = useState<TMDBMovie[]>([]);
 
   const fetchMovies = useCallback(async (page: number) => {
@@ -35,32 +35,39 @@ const ReadMore = (movies: TMDBResponse) => {
     if (isInView && !isLoading && page < movies.total_pages) {
       fetchMovies(page + 1);
     }
-  }, [isLoading, isInView, movies.total_pages, page, fetchMovies]);
+  }, [isInView, movies.total_pages, page, fetchMovies, isLoading]);
 
   useEffect(() => {
-    console.log({ page, fetchedMovies, totoalMovies });
-  }, [page, fetchedMovies, totoalMovies]);
+    console.log({ page, fetchedMovies, totalMovies });
+  }, [page, fetchedMovies, totalMovies]);
 
   useEffect(() => {
     if (!isLoading && fetchedMovies.length > 0) {
       setTimeout(() => {
-        setTotoalMovies((prev) => [...prev, ...fetchedMovies]);
+        setTotalMovies((prev) => [...prev, ...fetchedMovies]);
         setFetchedMovies([]);
       }, 1000);
     }
-  }, [fetchedMovies, isLoading]);
-
+  }, [isLoading, fetchedMovies]);
   return (
     <>
       <ul className="grid grid-cols-2 gap-5 px-5 sm:grid-cols-3 md:grid-cols-4 max-w-300 mx-auto">
-        {totoalMovies.map((movie) => (
+        {totalMovies.map((movie) => (
           <li key={movie.title}>
             <MovieItem {...movie} />
           </li>
         ))}
-        {/* {fetchedMovies.length >0 && fetchMovies.length >0} */}
+        {fetchedMovies.length > 0 &&
+          fetchedMovies.map((movie) => (
+            <li key={movie.title}>
+              <MovieItem {...movie} />
+            </li>
+          ))}
+        {isLoading && <div className="p-10" />}
       </ul>
-      return <Wrapper>{isLoading ? "loading..." : "Read More"}</Wrapper>;
+      <Wrapper className="p-5 border">
+        {isLoading ? "Loading..." : "Read More"}
+      </Wrapper>
     </>
   );
 };

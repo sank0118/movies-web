@@ -5,7 +5,6 @@ import { useState } from "react";
 
 const MovieSlideItem = (movie: TMDBMovie) => {
   const [isHovering, setIsHovering] = useState(false);
-
   return (
     <div
       className="mx-2.5 overflow-hidden rounded-xl relative"
@@ -22,7 +21,7 @@ const MovieSlideItem = (movie: TMDBMovie) => {
       {isHovering && (
         <Link
           href={`/${movie.id}`}
-          className="absolute bottom-0 left-0 w-full h-[50%] bg-black-50 text-white text-xs py-2.5 px-1"
+          className="absolute bottom-0 left-0 w-full bg-black/50 text-white text-xs py-2.5 px-1"
         >
           <p>{movie.title}</p>
         </Link>

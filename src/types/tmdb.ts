@@ -74,3 +74,12 @@ export interface GeoLocationResponse {
 export interface UserAgent extends Geolocation {
   agent: string;
 }
+
+export interface TMDBRESPONSE {
+  success: boolean;
+  data: {
+    success: boolean;
+    status_message: string;
+    status_code: number;
+  };
+}

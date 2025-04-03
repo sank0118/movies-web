@@ -6,17 +6,20 @@ import {
 } from "@/types/tmdb";
 import Image from "next/image";
 import MovieSlide from "./MovieSlide";
-import { AiOutlinePaperClip, AiOutlineShareAlt } from "react-icons/ai";
 import Buttons from "./Buttons";
 
 const fetchMovie = async (
   props: PageProps<{ mid: string }>
-): Promise<TMDBMovieDetail> => {
+): Promise<TMDBMovieDetail | null> => {
   const { mid } = await props.params;
-  const url = `https://api.themoviedb.org/3/movie/${mid}?language=en-US`;
+  const url = `${process.env.NEXT_PUBLIC_URL}/api/v0/tmdb/mid?mid=${mid}`;
 
-  const res = await fetch(url, tmdbOptions());
-  const data = (await res.json()) as TMDBMovieDetail;
+  const res = await fetch(url);
+  const data = await res.json();
+  if (data.status_code && !data.success) {
+    console.log(data.status.message, 21);
+    return null;
+  }
 
   return data;
 };
